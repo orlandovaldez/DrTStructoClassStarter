@@ -1,1 +1,9 @@
-Green Tea
+	Item Name			Quantity 
+	Green Tea		10
+	Green Tea		10
+	Burrito		3
+	Item 3		0
+	Item 4		2
+	Item 5		2
+	Item 6		1
+	Item 7		2
