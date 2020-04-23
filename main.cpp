@@ -182,7 +182,11 @@ void printTextReciept(vector<MenuItemList> &m)
   reciept << "\t" <<"Item Name" << "\t\t\t" << "Quantity " << endl;
   reciept << "\t" << m[0].getName() << "\t\t" << m[0].getCount() << endl; 
   
- 
+  for(int i=0; i < m.size(); i++)//gets the name and quantity of order and prints to text file accorrdingly
+  {
+      reciept << "\t" << m[i].getName() << "\t\t" << m[i].getCount() << endl; 
+  }
+
 
   reciept.close();  
 
