@@ -5,6 +5,7 @@
 #include<vector>
 #include<iomanip>
 #include <fstream> // write to a file
+#include <unistd.h>
 using namespace std; 
 
 
@@ -58,7 +59,7 @@ void populateObjectMenu(vector<MenuItemList> &entireMenu)
   entireMenu.push_back(Item6); //add to the end of list the Item6
   entireMenu.push_back(Item7); //add to the end of list the Item7
 
-  vector<string> defaultMenuNames = {"Green Tea", "Burrito", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7"}; 
+  vector<string> defaultMenuNames = {"Green Tea", "Burrito", "Tortas", "Tacos", "Horchata", "Elote", "Boba Tea"}; 
   vector<char> defaultAddLetters = {'A', 'B', 'C', 'D', 'E', 'F', 'G'}; 
   vector<char> defaultRemoveLetters = {'a', 'b', 'c', 'd', 'e', 'f', 'g'}; 
 
@@ -99,17 +100,21 @@ void showobjectMenu(vector<MenuItemList> &m)
 void acceptobjectOrder(vector<MenuItemList> &m)
 {
   char option = '\0';// the user-selected menu item
-  double subtotal = 0.0; 
+  double subtotal = 0.0;
 
+  double total = 0.0;
   double tipRate = 0.20;
   double taxRate = 0.0825;
+  double tipInput = 0.20;
   double tip = 0.0;
   double tax = 0.0;
+  double cash, change = 0.0;
+  char paymentMethod;
   
 
   do
   {
-    cout << "\nPlease choose an item (x to Exit): ";
+    cout << "\nPlease choose an item (x to Exit): " ;
     cin >> option; 
 
     for(int i=0; i < m.size(); i++)
@@ -156,14 +161,72 @@ void acceptobjectOrder(vector<MenuItemList> &m)
             }
     }
   }while(option != 'x' && option != 'X'); 
+  
+  cout << "What Percent Would You Like To Tip? (20% is the preffered amount): ";
+  cin >> tipInput;
+  tipRate = (tipInput * (0.010));
+  total = subtotal;
+  tip = (subtotal * tipRate);
+  tax = (subtotal * taxRate);
+  cout << "\nTotal " << setw(13) << total << endl;
+  cout << "Tip " << setw(15) << tip << endl;
+  cout << "Tax " << setw(15) << tax << endl;
+  subtotal = (subtotal + tip + tax);
+  cout << "\nSubtotal "  << setw(10)<< subtotal ;
+  cout << "\n\nHow Would you like to pay?" << endl;
+  cout << "A. Cash " << endl;
+  cout << "B. Credit Card" << endl;
+  cout << "X. Cancel" << endl;
+  cin >> paymentMethod;
 
-  ///**cout << "Would You like To Add A Tip? (20% is the default)" << endl;;
-  cin >> tipRate;
-  tipRate = tipRate * (0.10);
-  tip = subtotal * tipRate ;
-  cout << tip << endl;
-  subtotal = (subtotal + tip);
-  cout << subtotal ;
+  do{
+  if(paymentMethod == 'A' || paymentMethod == 'a')
+    {
+      cout << "What Is Your Cash Payment Amount? ";
+      cin >> cash;
+      change = (cash - subtotal);
+      cout << "\nTotal " << setw(13) << total << endl;
+      cout << "Tip " << setw(15) << tip << endl;
+      cout << "Tax " << setw(15) << tax << endl;      
+      cout << "\nSubtotal "  << setw(10)<< subtotal;
+      cout << "\nPayment" << setw(12) << cash << endl;
+      cout << "\nChange " << setw(12) << change << endl;
+    }
+  else if (paymentMethod == 'B' || paymentMethod == 'b')
+    {
+      cout << "|Please Insert Card Into Reader|" << endl;
+      sleep(1);
+      cout << "|Reading Card Info.............|" << endl;
+      sleep(2);
+      cout << "|PROCESSING PAYMENT............|" << endl;
+      cout << "|DO NOT REMOVE CARD............|" << endl;
+      sleep(4);
+      cout << "\t\tPayment Successful! " << endl;
+    }
+    else if(paymentMethod != 'A' && paymentMethod != 'a' && paymentMethod != 'B' && paymentMethod != 'b' && paymentMethod != 'x' && paymentMethod != 'X')
+    {
+      if (paymentMethod == '\0')
+      {
+      cout << "Invalid Payment Method Try Again";
+      }
+    }
+  }while(paymentMethod != 'x' && paymentMethod != 'X');
+   
+  cout << "\n1 UP on Green Tea Receipt"<< endl;
+  for(int i=0 ; i < m.size(); i++)
+  {
+    cout << m[i].getName() << setw(5) << "\t\t" << setw(10) << m[i].getCount() << setw(15)<<  m[i].getItemCost() << endl; 
+  }
+
+
+
+
+
+
+
+
+
+
   //**/
   cout << "\nThank you for placing your order." << endl; 
   //handle the tip process here
@@ -180,17 +243,19 @@ void printTextReciept(vector<MenuItemList> &m)
   reciept.open("reciept.txt",ios::out);
 
   reciept << "\t" <<"Item Name" << "\t\t\t" << "Quantity " << endl;
-  reciept << "\t" << m[0].getName() << "\t\t" << m[0].getCount() << endl; 
+  //reciept << "\t" << m[0].getName() << "\t\t" << m[0].getCount() << endl; 
   
   for(int i=0; i < m.size(); i++)//gets the name and quantity of order and prints to text file accorrdingly
   {
       reciept << "\t" << m[i].getName() << "\t\t" << m[i].getCount() << endl; 
+      
   }
+
 
 
   reciept.close();  
 
-  fstream html; 
+  /**fstream html; 
   html.open("index.html",ios::out);
 
   html << "<html><head><title>Cool</title><head>";
@@ -199,7 +264,7 @@ void printTextReciept(vector<MenuItemList> &m)
   html << "</body></html>";  
 
   html.close(); 
-
+  **/
 
 }
 
