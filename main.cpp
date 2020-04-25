@@ -6,6 +6,7 @@
 #include<iomanip>
 #include <fstream> // write to a file
 #include <unistd.h>
+#include "Input_Validation_Extended.h"
 using namespace std; 
 
 
@@ -41,6 +42,7 @@ class MenuItemList
 //function definitions
 void populateObjectMenu(vector<MenuItemList> &entireMenu)
 {
+
   //put some default values in our Menu
   const int numItems = 7; 
   MenuItemList Item1; //Item1 is an object 
@@ -81,8 +83,14 @@ void populateObjectMenu(vector<MenuItemList> &entireMenu)
 //**********Classs Style**********/
 void showobjectMenu(vector<MenuItemList> &m)
 {
+  string color;
+  string colorR = "\x1b[31;15m";
+  string colorG = "\x1b[32;4m";
+  string colorT = "\x1b[36;15m";
+  string colorMenu = "\x1b[34;4m";
+  string reset = "\x1b[0m";
   cout << fixed << setprecision(2);//set doubles to 2 decimal places
-  cout << "DrT's Effcient Object Menu" << endl; 
+  cout << colorG << "DrT's Effcient Object Menu" << reset << endl; 
   cout << "ADD  \tNAME \t COST \tREMOVE\tCOUNT\tDESC"<<endl; 
   for(int i = 0; i < m.size(); i++)
   {
@@ -101,7 +109,6 @@ void acceptobjectOrder(vector<MenuItemList> &m)
 {
   char option = '\0';// the user-selected menu item
   double subtotal = 0.0;
-
   double total = 0.0;
   double tipRate = 0.20;
   double taxRate = 0.0825;
@@ -110,11 +117,16 @@ void acceptobjectOrder(vector<MenuItemList> &m)
   double tax = 0.0;
   double cash, change = 0.0;
   char paymentMethod;
-  
+  string color;
+  string colorR = "\x1b[31;15m";
+  string colorG = "\x1b[32;4m";
+  string colorT = "\x1b[36;15m";
+  string colorMenu = "\x1b[40;93m";
+  string reset = "\x1b[0m";
 
   do
   {
-    cout << "\nPlease choose an item (x to Exit): " ;
+    cout << colorG<< "\nPlease choose an item (x to Exit): " << reset ;
     cin >> option; 
 
     for(int i=0; i < m.size(); i++)
@@ -162,73 +174,101 @@ void acceptobjectOrder(vector<MenuItemList> &m)
     }
   }while(option != 'x' && option != 'X'); 
   
-  cout << "What Percent Would You Like To Tip? (20% is the preffered amount): ";
-  cin >> tipInput;
+  cout << colorMenu << "\nWhat Percent Would You Like To Tip? \n(20% is the preffered amount): " << reset;
+  validateDouble(tipInput);
   tipRate = (tipInput * (0.010));
   total = subtotal;
   tip = (subtotal * tipRate);
   tax = (subtotal * taxRate);
-  cout << "\nTotal " << setw(13) << total << endl;
-  cout << "Tip " << setw(15) << tip << endl;
-  cout << "Tax " << setw(15) << tax << endl;
+  cout << "\nTotal " << setw(13) <<"$"<< total << endl;
+  cout << "Tip " << setw(15) << "$"<<tip << endl;
+  cout << "Tax " << setw(15) << "$"<<tax << endl;
   subtotal = (subtotal + tip + tax);
-  cout << "\nSubtotal "  << setw(10)<< subtotal ;
-  cout << "\n\nHow Would you like to pay?" << endl;
+  cout << colorR <<"\nSubtotal "  << setw(10)<< "$"<< subtotal << reset;
+  cout << colorMenu <<"\n\nHow Would you like to pay?"<< reset << endl;
   cout << "A. Cash " << endl;
   cout << "B. Credit Card" << endl;
-  cout << "X. Cancel" << endl;
+  //cout << "X. Cancel" << endl;
   cin >> paymentMethod;
 
-  do{
+ 
   if(paymentMethod == 'A' || paymentMethod == 'a')
     {
-      cout << "What Is Your Cash Payment Amount? ";
-      cin >> cash;
+      cout << colorMenu <<"What Is Your Cash Payment Amount? " << reset ;
+      validateDouble(cash);
       change = (cash - subtotal);
-      cout << "\nTotal " << setw(13) << total << endl;
-      cout << "Tip " << setw(15) << tip << endl;
-      cout << "Tax " << setw(15) << tax << endl;      
-      cout << "\nSubtotal "  << setw(10)<< subtotal;
-      cout << "\nPayment" << setw(12) << cash << endl;
-      cout << "\nChange " << setw(12) << change << endl;
+      cout << colorMenu <<"\nTotal "<< reset << setw(13) << total << endl;
+      cout << colorMenu <<"Tip "<< reset << setw(15) << tip << endl;
+      cout << colorMenu <<"Tax "<< reset << setw(15) << tax << endl;      
+      cout << colorMenu <<"\nSubtotal "<< reset  << setw(10)<< subtotal;
+      cout << colorMenu <<"\nPayment"<< reset << setw(12) << cash << endl;
+      cout << colorMenu <<"\nChange "<< reset << setw(12) << change << endl;
     }
   else if (paymentMethod == 'B' || paymentMethod == 'b')
     {
-      cout << "|Please Insert Card Into Reader|" << endl;
+      cout << colorMenu;
+      cout << "|Please Insert Card Into Reader|\n" << endl;
       sleep(1);
-      cout << "|Reading Card Info.............|" << endl;
+      cout << "|Reading Card Info.............|\n" << endl;
       sleep(2);
-      cout << "|PROCESSING PAYMENT............|" << endl;
-      cout << "|DO NOT REMOVE CARD............|" << endl;
-      sleep(4);
-      cout << "\t\tPayment Successful! " << endl;
+      cout << "|PROCESSING PAYMENT............|\n" << endl;
+      cout << "|DO NOT REMOVE CARD............|\n" << endl;
+      sleep(3);
+      cout << "\n\n\t\tPayment Successful! " << endl;
+      cout << "V V V-- Your Reciept Displayed Below --V V V\n";
+      cout << reset;
     }
-    else if(paymentMethod != 'A' && paymentMethod != 'a' && paymentMethod != 'B' && paymentMethod != 'b' && paymentMethod != 'x' && paymentMethod != 'X')
-    {
-      if (paymentMethod == '\0')
-      {
-      cout << "Invalid Payment Method Try Again";
-      }
-    }
-  }while(paymentMethod != 'x' && paymentMethod != 'X');
-   
-  cout << "\n1 UP on Green Tea Receipt"<< endl;
+  cout << colorT <<"*********************************************"<< reset;    
+  cout << colorG << "\n1 UP on Green Tea Receipt"<< reset << endl;
+  cout << "    ITEM \t  COST \t QUANTITY" << endl;
   for(int i=0 ; i < m.size(); i++)
   {
-    cout << m[i].getName() << setw(5) << "\t\t" << setw(10) << m[i].getCount() << setw(15)<<  m[i].getItemCost() << endl; 
+  cout << setw(10) << m[i].getName() << setw(5) << "$" << m[i].getItemCost() << setw(5) << setw(7) << m[i].getCount() << setw(13)  <<endl;  
+  }
+  cout << "\nTotal " << setw(9) <<"$"<< total << endl;
+  cout << "Tip " << setw(11) << "$"<<tip << endl;
+  cout << "Tax " << setw(11) << "$"<<tax << endl;      
+  cout << colorR << "\nSubtotal "  << setw(6)<< "$"<< subtotal << reset;
+  cout << "\nPayment" << setw(8) << "$"<<cash << endl;
+  cout << "\nChange " << setw(8) << "$"<<change << endl;
+
+
+
+
+  
+  cout << colorT <<"*********************************************"<< reset;    
+  cout << "\nThank you for placing your order." << endl; 
+//below this line the output to print to the reciept is done with slelected output varibles
+  fstream reciept; 
+  reciept.open("reciept.txt",ios::out);
+
+  reciept <<"*********************************************";    
+  reciept << "\n1 UP on Green Tea Receipt"<< endl;
+  reciept << "    ITEM \t  COST \t QUANTITY" << endl;
+  reciept << fixed << setprecision(2);
+  for(int i=0 ; i < m.size(); i++)
+  {
+  reciept << setw(10) << m[i].getName() << setw(5) << "$" << m[i].getItemCost() << setw(5) << setw(7) << m[i].getCount() << setw(13)  <<endl;  
   }
 
+  
+  reciept << "\nTotal " << setw(9) << "$"<<total << endl;
+  reciept << "Tip " << setw(11) << "$"<<tip << endl;
+  reciept << "Tax " << setw(11) << "$"<<tax << endl;      
+  reciept << "\nSubtotal "  << setw(6)<< "$"<<subtotal;
+  reciept << "\nPayment" << setw(8) << "$"<<cash << endl;
+  reciept << "\nChange " << setw(8) << "$"<<change << endl;
+
+  reciept << "\nThank You Come Again!" << endl;
 
 
 
+  
+  reciept <<"*********************************************";
 
 
 
-
-
-
-  //**/
-  cout << "\nThank you for placing your order." << endl; 
+  reciept.close(); 
   //handle the tip process here
   //callculate total due + tax + tip//accept payment type
   //handle cash vs. credit
@@ -239,46 +279,54 @@ void acceptobjectOrder(vector<MenuItemList> &m)
 
 void printTextReciept(vector<MenuItemList> &m)
 {
+  /**double total, tip, tax, subtotal, cash, change = 0.0;
+
   fstream reciept; 
   reciept.open("reciept.txt",ios::out);
 
-  reciept << "\t" <<"Item Name" << "\t\t\t" << "Quantity " << endl;
-  //reciept << "\t" << m[0].getName() << "\t\t" << m[0].getCount() << endl; 
-  
-  for(int i=0; i < m.size(); i++)//gets the name and quantity of order and prints to text file accorrdingly
+  reciept <<"*********************************************";    
+  reciept << "\n1 UP on Green Tea Receipt"<< endl;
+  reciept << "    ITEM \t  COST \t QUANTITY" << endl;
+  reciept << fixed << setprecision(2);
+  for(int i=0 ; i < m.size(); i++)
   {
-      reciept << "\t" << m[i].getName() << "\t\t" << m[i].getCount() << endl; 
-      
+  reciept << setw(10) << m[i].getName() << setw(5) << "$" << m[i].getItemCost() << setw(5) << setw(7) << m[i].getCount() << setw(13)  <<endl;  
   }
-
-
-
+  reciept << "\nTotal " << setw(13) << total << endl;
+  reciept << "Tip " << setw(15) << tip << endl;
+  reciept << "Tax " << setw(15) << tax << endl;      
+  reciept << "\nSubtotal "  << setw(10)<< subtotal;
+  reciept << "\nPayment" << setw(12) << cash << endl;
+  reciept << "\nChange " << setw(12) << change << endl;
+  cout <<"*********************************************";
   reciept.close();  
-
-  /**fstream html; 
-  html.open("index.html",ios::out);
-
-  html << "<html><head><title>Cool</title><head>";
-  html << "<body style=\"background-color:#000000; color:#FFFFFF;\">";
-  html << "<h1>"<< m[0].getName() << "</h1>" << endl;
-  html << "</body></html>";  
-
-  html.close(); 
   **/
-
 }
 
-int main() 
+void clrscr()//loop to clear the screen after every loop
 {
-  
+    system("@cls||clear");
+}
 
-//*******Class Style********/
-vector<MenuItemList> objectMenu; 
-populateObjectMenu(objectMenu); //put some default values in the menu
-showobjectMenu(objectMenu); //show the inital menu on screen
-acceptobjectOrder(objectMenu);
-//solve and call acceptObjectOrder void function here
 
-printTextReciept(objectMenu); 
+int main() 
+  {
+   char order = 'Y';
+    //*******Class Style********/
+    while( order == 'Y' || order == 'y')//user selelcts if they want to run menu order again
+    {
+    clrscr();
+    vector<MenuItemList> objectMenu; 
+    populateObjectMenu(objectMenu); //put some default values in the menu
+    showobjectMenu(objectMenu); //show the inital menu on screen
+    acceptobjectOrder(objectMenu);
+    //solve and call acceptObjectOrder void function here
+
+    printTextReciept(objectMenu); 
+    
+    cout << "Order Again? (Y/N)";
+    cin >> order;
+    }
+    cout << "Thank You Come Again!";
   return 0; 
 }

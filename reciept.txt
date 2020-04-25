@@ -1,8 +1,22 @@
-	Item Name			Quantity 
-	Green Tea		1
-	Burrito		0
-	Tortas		0
-	Tacos		0
-	Horchata		0
-	Elote		0
-	Boba Tea		0
+*********************************************
+1 UP on Green Tea Receipt
+    ITEM 	  COST 	 QUANTITY
+ Green Tea    $3.00      0
+   Burrito    $4.00      0
+    Tortas    $5.00      0
+     Tacos    $6.00      0
+  Horchata    $7.00      0
+     Elote    $8.00      0
+  Boba Tea    $9.00      0
+      
+Total         $0.00
+Tip           $0.00
+Tax           $0.00
+
+Subtotal      $0.00
+Payment       $0.00
+
+Change        $0.00
+
+Thank You Come Again!
+*********************************************
