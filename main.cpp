@@ -1,4 +1,10 @@
-//A  Restaurant Project Struct style Dr_T Dr. Tyson McMillan 10-2-2019
+//Name:Orlando Valdez
+//Teacher: Dr_T
+//School: Tarrant County College
+//Date:4-15-2020
+//Purpose: A Restaruant struct file convereted to class 
+//Skills: update code, output results to text file, convert to class 
+
 
 #include <iostream>
 #include<string>
